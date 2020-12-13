@@ -35,6 +35,8 @@ import { InputError, AccessError } from "./error";
 
 const app = express();
 
+// Serve static files from the React frontend app
+app.use(express.static(path.join(__dirname, "/../frontend/build")));
 
 // app.use(cors());
 // app.use(bodyParser.urlencoded({ extended: true, }));
@@ -69,8 +71,6 @@ app.get(
 
 /**************** Running the server ******************/
 
-// Serve static files from the React frontend app
-app.use(express.static(path.join(__dirname, "/../frontend/build")));
 
 // Anything that doesn't match the above, send back index.html
 app.get("*", (req, res) => {
