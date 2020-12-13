@@ -24,6 +24,7 @@
     "eject": "react-scripts eject",
     "backend": "nodemon -r esm backend/server.js"
   },
+  "proxy": "http://localhost:5000",
   "eslintConfig": {
     "extends": [
       "react-app",
