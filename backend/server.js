@@ -3,6 +3,7 @@ import express from "express";
 // import swaggerUi from 'swagger-ui-express';
 // import bodyParser from 'body-parser';
 // import cors from 'cors';
+import path from "path";
 
 import { InputError, AccessError } from "./error";
 // import swaggerDocument from '../../swagger.json';
@@ -33,6 +34,14 @@ import { InputError, AccessError } from "./error";
 // } from './service';
 
 const app = express();
+
+// Serve static files from the React frontend app
+app.use(express.static(path.join(__dirname, "/frontend/build")));
+
+// Anything that doesn't match the above, send back index.html
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/frontend/build/index.html"));
+});
 
 // app.use(cors());
 // app.use(bodyParser.urlencoded({ extended: true, }));
@@ -66,10 +75,10 @@ app.get(
 /**************** Running the server ******************/
 
 // Choose the port and start the server
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Mixing it up on port ${PORT}`)
-})
+  console.log(`Mixing it up on port ${PORT}`);
+});
 
 // /***************************************************************
 //                        Auth Functions
