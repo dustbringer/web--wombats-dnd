@@ -9,6 +9,7 @@ function App() {
     fetch(`/api/test`)
       .then((res) => res.json().then((json) => ({ status: res.status, json })))
       .then((res) => {
+        console.log(res);
         if (res.status !== 200) {
           throw Error(res.json.error);
         }
