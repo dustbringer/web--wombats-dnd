@@ -7,7 +7,13 @@ function App() {
 
   React.useEffect(() => {
     fetch(`/api/test`)
-      .then((res) => res.json())
+      .then((res) => res.json().then((json) => ({ status: res.status, json })))
+      .then((res) => {
+        if (res.status !== 200) {
+          throw Error(res.json.error);
+        }
+        return res.json;
+      })
       .then((json) => setMoo(json.moo))
       .catch((err) => console.log(err.message));
   }, []);
