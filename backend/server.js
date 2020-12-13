@@ -1,10 +1,10 @@
 // import fs from 'fs';
-// import express from 'express';
+import express from "express";
 // import swaggerUi from 'swagger-ui-express';
 // import bodyParser from 'body-parser';
 // import cors from 'cors';
 
-// import { InputError, AccessError, } from './error';
+import { InputError, AccessError } from "./error";
 // import swaggerDocument from '../../swagger.json';
 // import {
 //   getEmailFromAuthorization,
@@ -32,27 +32,44 @@
 //   hasStarted,
 // } from './service';
 
-// const app = express();
+const app = express();
 
 // app.use(cors());
 // app.use(bodyParser.urlencoded({ extended: true, }));
 // app.use(bodyParser.json({ limit: '50mb', }));
 
-// const catchErrors = fn => async (req, res) => {
-//   try {
-//     await fn(req, res);
-//     save();
-//   } catch (err) {
-//     if (err instanceof InputError) {
-//       res.status(400).send({ error: err.message, });
-//     } else if (err instanceof AccessError) {
-//       res.status(403).send({ error: err.message, });
-//     } else {
-//       console.log(err);
-//       res.status(500).send({ error: 'A system error ocurred', });
-//     }
-//   }
-// };
+const catchErrors = (fn) => async (req, res) => {
+  try {
+    await fn(req, res);
+    // save();
+  } catch (err) {
+    if (err instanceof InputError) {
+      res.status(400).send({ error: err.message });
+    } else if (err instanceof AccessError) {
+      res.status(403).send({ error: err.message });
+    } else {
+      console.log(err);
+      res.status(500).send({ error: "A system error ocurred" });
+    }
+  }
+};
+
+// Serve our base route that returns a Hello World cow
+app.get(
+  "/api/test/",
+  catchErrors(async (req, res, next) => {
+    const moo = "mooooooo!";
+    res.json({ moo });
+  })
+);
+
+/**************** Running the server ******************/
+
+// Choose the port and start the server
+const PORT = process.env.PORT || 5000
+app.listen(PORT, () => {
+  console.log(`Mixing it up on port ${PORT}`)
+})
 
 // /***************************************************************
 //                        Auth Functions
