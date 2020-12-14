@@ -16,7 +16,7 @@ function App() {
         return res.json;
       })
       .then((json) => setMoo(json.moo))
-      .catch((err) => console.log(err.message));
+      .catch((err) => console.log("ERRORR", err.message));
   }, []);
 
   return (

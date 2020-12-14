@@ -47,6 +47,7 @@ const catchErrors = (fn) => async (req, res) => {
     await fn(req, res);
     // save();
   } catch (err) {
+    console.log("CATCHED ERROR", err);
     if (err instanceof InputError) {
       res.status(400).send({ error: err.message });
     } else if (err instanceof AccessError) {
@@ -67,10 +68,7 @@ app.get(
   })
 );
 
-
-
 /**************** Running the server ******************/
-
 
 // Anything that doesn't match the above, send back index.html
 app.get("*", (req, res) => {
