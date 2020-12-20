@@ -6,8 +6,8 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import Home from "./pages/Home";
-import Calender from "./pages/Calender";
+import HomePage from "./pages/HomePage";
+import CalenderPage from "./pages/CalenderPage";
 
 const theme = createMuiTheme({
   palette: {
@@ -51,8 +51,8 @@ function App() {
           <Navbar />
           <div id="content">
             <Switch>
-              <Route path="/calender" component={Calender} />
-              <Route path="/" component={Home} />
+              <Route path="/calender" component={CalenderPage} />
+              <Route path="/" component={HomePage} />
             </Switch>
           </div>
         </Router>

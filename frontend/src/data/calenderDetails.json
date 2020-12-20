@@ -1,0 +1,70 @@
+{
+    "days": [
+        "Miresen",
+        "Grissen",
+        "Whelson",
+        "Conthsen",
+        "Folsen",
+        "Yulisen",
+        "Da'Leysen"
+    ],
+    "months": [
+        {
+            "name": "Horisal",
+            "days": 29
+        },
+
+        {
+            "name": "Misuthar",
+            "days": 30
+        },
+        {
+            "name": "Dualahei",
+            "days": 30
+        },
+        {
+            "name": "Thunsheer",
+            "days": 31
+        },
+        {
+            "name": "Unndilar",
+            "days": 28
+        },
+        {
+            "name": "Brussendar",
+            "days": 31
+        },
+        {
+            "name": "Sydenstar",
+            "days": 32
+        },
+        {
+            "name": "Fessuran",
+            "days": 29
+        },
+        {
+            "name": "Quen'pillar",
+            "days": 27
+        },
+        {
+            "name": "Cuersaar",
+            "days": 29
+        },
+        {
+            "name": "Duscar",
+            "days": 32
+        }
+    ],
+    "baselineDate": {
+        "day": 1,
+        "month": 7,
+        "year": 835,
+        "dayOfWeek": 5,
+        "monthName": "Sydenstar",
+    },
+    "currentDate": {
+        "day": 26,
+        "month": 7,
+        "year": 835
+    }
+}
