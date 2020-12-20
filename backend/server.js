@@ -1,7 +1,7 @@
 // import fs from 'fs';
 import express from "express";
 // import swaggerUi from 'swagger-ui-express';
-// import bodyParser from 'body-parser';
+import bodyParser from "body-parser";
 // import cors from 'cors';
 import path from "path";
 
@@ -39,8 +39,8 @@ const app = express();
 app.use(express.static(path.join(__dirname, "../frontend/build")));
 
 // app.use(cors());
-// app.use(bodyParser.urlencoded({ extended: true, }));
-// app.use(bodyParser.json({ limit: '50mb', }));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 const catchErrors = (fn) => async (req, res) => {
   try {
