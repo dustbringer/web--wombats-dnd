@@ -1,4 +1,5 @@
 {
+    "totalDays": 328,
     "days": [
         "Miresen",
         "Grissen",
@@ -8,6 +9,7 @@
         "Yulisen",
         "Da'Leysen"
     ],
+    "totalMonths": 11,
     "months": [
         {
             "name": "Horisal",
@@ -55,14 +57,14 @@
             "days": 32
         }
     ],
-    "baselineDate": {
+    "baseDate": {
         "day": 1,
         "month": 7,
         "year": 835,
         "dayOfWeek": 5,
-        "monthName": "Sydenstar",
+        "monthName": "Sydenstar"
     },
-    "currentDate": {
+    "currDate": {
         "day": 26,
         "month": 7,
         "year": 835
