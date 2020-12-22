@@ -21,8 +21,8 @@ const CalenderPage = () => {
   return (
     <>
       <Container maxWidth="md" className={classes.container}>
-        <Typography variant="h6" className={classes.title}>
-          calender
+        <Typography variant="h4" gutterBottom className={classes.title}>
+          Calender
         </Typography>
         <MonthlyCalender />
       </Container>

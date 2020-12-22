@@ -26,21 +26,26 @@ export default class Dates {
   /**
    * Parameters: Current date
    * (NOT TESTED)
+   *
+   * Note: dayOfWeek is indexed from 1
    */
   static dayOfWeek(day, month, year) {
-    return mod(
-      Math.abs(
-        cal.baseDate.dayOfWeek +
-          Dates.daysBetween(
-            cal.baseDate.day,
-            cal.baseDate.month,
-            cal.baseDate.year,
-            day,
-            month,
-            year
-          )
-      ),
-      7
+    return (
+      mod(
+        Math.abs(
+          cal.baseDate.dayOfWeek -
+            1 +
+            Dates.daysBetween(
+              cal.baseDate.day,
+              cal.baseDate.month,
+              cal.baseDate.year,
+              day,
+              month,
+              year
+            )
+        ),
+        7
+      ) + 1
     );
   }
 }
