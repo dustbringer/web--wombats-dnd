@@ -15,3 +15,16 @@ export const DivFlexCenterHInside = styled.div`
   flex-direction: row;
   justify-content: center;
 `;
+
+export const DivFlexCenterVInside = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
+export const DivFlexCenterInside = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`;

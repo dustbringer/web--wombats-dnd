@@ -9,6 +9,8 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 
 import * as NavbarStyled from "./styled/NavbarStyled";
+import { DivRowSpaceBetween } from "./styled/Divs";
+import wombatIcon from "../img/flaticon-polar-bear.svg";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -19,9 +21,14 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: "100px",
     minHeight: "50px",
   },
+  icon: {
+    margin: "0 10px 0",
+    maxHeight: "35px",
+    maxWidth: "35px",
+  }
 }));
 
-const LinkStyled = styled(Link)`
+const NavLink = styled(Link)`
   text-decoration: none;
   color: white;
   font-family: Lora;
@@ -39,6 +46,21 @@ const LinkStyled = styled(Link)`
   }
 `;
 
+const TitleLink = styled(Link)`
+  text-decoration: none;
+  color: white;
+  font-family: Lora;
+
+  &:focus,
+  &:hover,
+  &:visited,
+  &:link,
+  &:hover,
+  &:active {
+    text-decoration: none;
+  }
+`;
+
 const Navbar = () => {
   const classes = useStyles();
   const history = useHistory();
@@ -48,15 +70,24 @@ const Navbar = () => {
       <AppBar position="static" elevation={1}>
         <Toolbar className={classes.toolbar}>
           <Container maxWidth="md" className={classes.container}>
-            <Typography variant="h6" className={classes.title}>
-              Wombat
-            </Typography>
+            <TitleLink to="/"><DivRowSpaceBetween>
+              <img src={wombatIcon} alt="Wombat icon" className={classes.icon}/>
+              <Typography variant="h6" className={classes.title}>
+                Wombat
+              </Typography>
+            </DivRowSpaceBetween></TitleLink>
             <NavbarStyled.Links>
               <li>
-                <LinkStyled to="/">Home</LinkStyled>
+                <NavLink to="/">Home</NavLink>
               </li>
               <li>
-                <LinkStyled to="/calender">Calender</LinkStyled>
+                <NavLink to="/calender">Calender</NavLink>
+              </li>
+              <li>
+                <NavLink to="/fish">Fish</NavLink>
+              </li>
+              <li>
+                <NavLink to="/about">About</NavLink>
               </li>
             </NavbarStyled.Links>
           </Container>

@@ -3,10 +3,12 @@ import { useHistory } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
 import { DivFlexCenterHInside } from "../components/styled/Divs";
+import ianImage from "../img/ian.jpg";
 
 const useStyles = makeStyles((theme) => ({
   button: {},
@@ -17,28 +19,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const HomePage = () => {
+const FishPage = () => {
   const classes = useStyles();
   const history = useHistory();
 
   return (
     <>
       <Container maxWidth="md" className={classes.container}>
-        <Typography variant="h6" className={classes.title}>
-          Home!!!
-        </Typography>
         <DivFlexCenterHInside>
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={() => history.push("/calender")}
-          >
-            Goto Calender
-          </Button>
+          <img src={ianImage} alt="ian the fisher-gnome"/>
         </DivFlexCenterHInside>
       </Container>
     </>
   );
 };
 
-export default HomePage;
+export default FishPage;

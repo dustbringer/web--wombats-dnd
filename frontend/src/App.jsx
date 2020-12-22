@@ -8,6 +8,8 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import HomePage from "./pages/HomePage";
 import CalenderPage from "./pages/CalenderPage";
+import FishPage from "./pages/FishPage";
+import AboutPage from "./pages/AboutPage";
 
 const theme = createMuiTheme({
   palette: {
@@ -51,7 +53,9 @@ function App() {
           <Navbar />
           <div id="content">
             <Switch>
-              <Route path="/calender" component={CalenderPage} />
+              <Route path="/calender" exact component={CalenderPage} />
+              <Route path="/fish" exact component={FishPage} />
+              <Route path="/about" exact component={AboutPage} />
               <Route path="/" component={HomePage} />
             </Switch>
           </div>
