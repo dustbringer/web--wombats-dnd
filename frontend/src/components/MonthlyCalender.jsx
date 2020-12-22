@@ -7,6 +7,7 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
+import MonthlyCalenderTile from "./MonthlyCalenderTile";
 import {
   DivRowSpaceBetween,
   DivFlexCenterHInside,
@@ -39,27 +40,6 @@ const useStyles = makeStyles((theme) => ({
     margin: "0 1px 5px",
     borderRadius: "2px",
   },
-  tile: {
-    display: "inline-block",
-    verticalAlign: "top", // Align blocks to the top
-    width: "120px",
-    height: "120px",
-    margin: "1px",
-  },
-  tileActive: {
-    // border: "1px solid #2f3241",
-    backgroundColor: "#ffffff",
-    borderRadius: "2px",
-  },
-  tileInactive: {
-    // border: "1px solid #ffffff",
-    backgroundColor: "transparent",
-    borderRadius: "2px",
-  },
-  tileCurrent: {
-    // border: "1px solid #ff4500",
-    boxShadow: "0px 0px 0px 2px #ff4500 inset",
-  },
 }));
 
 const MonthlyCalender = () => {
@@ -88,18 +68,15 @@ const MonthlyCalender = () => {
 
   React.useEffect(() => {
     const firstDay = Dates.dayOfWeek(1, currMonth, currYear);
-    console.log(firstDay);
     const d = new Array(firstDay - 1)
       .fill(-1)
       .concat(
         Array.from(Array(cal.months[currMonth - 1].days), (e, i) => i + 1)
       );
     setDays(d);
-    console.log(d);
   }, [currMonth, currYear]);
 
-  // TODO Render MonthlyCalenderTile component for each tile
-  // Pass in display and the events on that day
+  // TODO Pass in display and the events on that day
 
   return (
     <div className="root">
@@ -142,23 +119,18 @@ const MonthlyCalender = () => {
 
           {/* Tiles */}
           {[...new Array(Math.ceil(days.length / 7))].map((row, i) => (
-            <div key={`row ${i}`} className={clsx(classes.row)}>
+            <div key={`row ${i}`}>
               {days.slice(7 * i, 7 * (i + 1)).map((e, j) => {
                 return (
-                  <div
+                  <MonthlyCalenderTile
                     key={`row ${i} index ${j}`}
-                    className={clsx(
-                      classes.tile,
-                      e > 0 ? classes.tileActive : classes.tileInactive,
+                    number={e}
+                    highlight={
                       e === cal.currDate.day &&
-                        currMonth === cal.currDate.month &&
-                        currYear === cal.currDate.year
-                        ? classes.tileCurrent
-                        : ""
-                    )}
-                  >
-                    {e > 0 && e}
-                  </div>
+                      currMonth === cal.currDate.month &&
+                      currYear === cal.currDate.year
+                    }
+                  />
                 );
               })}
             </div>

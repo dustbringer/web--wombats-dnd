@@ -30,7 +30,7 @@ const AboutPage = () => {
   return (
     <>
       <Container maxWidth="md" className={classes.container}>
-        <Typography variant="h6" className={classes.title}>
+        <Typography variant="h4" className={classes.title}>
           About
         </Typography>
         <Typography variant="body2">
