@@ -62,7 +62,7 @@ const catchErrors = (fn) => async (req, res) => {
 // Serve our base route that returns a Hello World cow
 app.get(
   "/api/test/",
-  catchErrors(async (req, res, next) => {
+  catchErrors(async (req, res) => {
     const moo = "mooooooo!";
     res.json({ moo });
   })

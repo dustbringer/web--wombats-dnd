@@ -1,5 +1,7 @@
 import React from "react";
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
+import GlobalProvider from "./GlobalContext";
+import Alerts from './components/Alerts';
 import "./App.css";
 
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
@@ -21,12 +23,12 @@ const theme = createMuiTheme({
     },
   },
   typography: {
-    "fontFamily": `"Lora", "serif"`,
-    "fontSize": 14,
-    "fontWeightLight": 300,
-    "fontWeightRegular": 400,
-    "fontWeightMedium": 500
-   }
+    fontFamily: `"Lora", "serif"`,
+    fontSize: 14,
+    fontWeightLight: 300,
+    fontWeightRegular: 400,
+    fontWeightMedium: 500,
+  },
 });
 
 function App() {
@@ -48,20 +50,23 @@ function App() {
 
   return (
     <div id="root">
-      <ThemeProvider theme={theme}>
-        <Router>
-          <Navbar />
-          <div id="content">
-            <Switch>
-              <Route path="/calender" exact component={CalenderPage} />
-              <Route path="/fish" exact component={FishPage} />
-              <Route path="/about" exact component={AboutPage} />
-              <Route path="/" component={HomePage} />
-            </Switch>
-          </div>
-        </Router>
-        <Footer />
-      </ThemeProvider>
+      <GlobalProvider>
+        <ThemeProvider theme={theme}>
+          <Router>
+            <Navbar />
+            <div id="content">
+              <Switch>
+                <Route path="/calender" exact component={CalenderPage} />
+                <Route path="/fish" exact component={FishPage} />
+                <Route path="/about" exact component={AboutPage} />
+                <Route path="/" component={HomePage} />
+              </Switch>
+            </div>
+          </Router>
+          <Footer />
+          <Alerts />
+        </ThemeProvider>
+      </GlobalProvider>
     </div>
   );
 }
