@@ -6,60 +6,40 @@ import { GlobalContext } from "../GlobalContext";
 
 const Alerts = () => {
   const context = React.useContext(GlobalContext);
-  const {
-    AlertErrorOpen,
-    AlertErrorMsg,
-    AlertSuccessOpen,
-    AlertSuccessMsg,
-  } = context;
+  const { AlertQueue } = context;
+  const [alertQueue, setAlertQueue] = AlertQueue;
+  const [alertOpen, setAlertOpen] = React.useState(false);
+  const [alertMsg, setAlertMsg] = React.useState("No message!");
+  const [alertType, setAlertType] = React.useState("error");
 
-  // AlertErrorOpen: [alertErrorOpen, setAlertErrorOpen],
-  // AlertErrorMsg: [alertErrorMsg, setAlertErrorMsg],
-  // AlertSuccessOpen: [alertSuccessOpen, setAlertSuccessOpen],
-  // AlertSuccessMsg: [alertSuccessMsg, setAlertSuccessMsg],
-  const [alertErrorOpen, setAlertErrorOpen] = AlertErrorOpen;
-  const [alertErrorMsg] = AlertErrorMsg;
-  const [alertSuccessOpen, setAlertSuccessOpen] = AlertSuccessOpen;
-  const [alertSuccessMsg] = AlertSuccessMsg;
-
-  const handleErrorClose = (event, reason) => {
-    if (reason === "clickaway") return;
-    setAlertErrorOpen(() => false);
+  const setAlert = (alert) => {
+    setAlertType(alert.type);
+    setAlertMsg(alert.msg);
   };
 
-  const handleSuccessClose = (event, reason) => {
+  React.useEffect(() => {
+    if (alertQueue && alertQueue.length !== 0) {
+      setAlert(alertQueue[0]);
+      setAlertOpen(true);
+    }
+  }, [alertQueue]);
+
+  const handleClose = (event, reason) => {
     if (reason === "clickaway") return;
-    setAlertSuccessOpen(() => false);
+    setAlertOpen(() => false);
+    setAlertQueue(q => q.slice(1));
   };
 
   return (
     <>
-      <Snackbar
-        open={alertSuccessOpen}
-        autoHideDuration={2000}
-        onClose={handleSuccessClose}
-      >
+      <Snackbar open={alertOpen} autoHideDuration={2000} onClose={handleClose}>
         <MuiAlert
           elevation={5}
           variant="filled"
-          onClose={handleSuccessClose}
-          severity="success"
+          onClose={handleClose}
+          severity={alertType}
         >
-          {alertSuccessMsg}
-        </MuiAlert>
-      </Snackbar>
-      <Snackbar
-        open={alertErrorOpen}
-        autoHideDuration={4000}
-        onClose={handleErrorClose}
-      >
-        <MuiAlert
-          elevation={5}
-          variant="filled"
-          onClose={handleErrorClose}
-          severity="error"
-        >
-          {alertErrorMsg}
+          {alertMsg}
         </MuiAlert>
       </Snackbar>
     </>

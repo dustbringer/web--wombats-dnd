@@ -1,33 +1,38 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 export const GlobalContext = React.createContext(null);
 
 // maybe move all this to 'AlertContext' if more things come up
 // seperate the contexts!
 const GlobalProvider = ({ children }) => {
-  const [alertErrorOpen, setAlertErrorOpen] = React.useState(false);
-  const [alertErrorMsg, setAlertErrorMsg] = React.useState('No Error!');
-  const [alertSuccessOpen, setAlertSuccessOpen] = React.useState(false);
-  const [alertSuccessMsg, setAlertSuccessMsg] = React.useState('No Success!');
+  const [alertQueue, setAlertQueue] = React.useState([]);
 
   const store = {
-    AlertErrorOpen: [alertErrorOpen, setAlertErrorOpen],
-    AlertErrorMsg: [alertErrorMsg, setAlertErrorMsg],
-    AlertSuccessOpen: [alertSuccessOpen, setAlertSuccessOpen],
-    AlertSuccessMsg: [alertSuccessMsg, setAlertSuccessMsg],
-    AlertQueue: [],
+    AlertQueue: [alertQueue, setAlertQueue],
     showError: (msg) => {
-      setAlertErrorMsg(msg);
-      setAlertErrorOpen(true);
+      setAlertQueue((q) => [
+        ...q,
+        {
+          type: "error",
+          msg,
+        },
+      ]);
     },
     showSuccess: (msg) => {
-      setAlertSuccessMsg(msg);
-      setAlertSuccessOpen(true);
+      setAlertQueue((q) => [
+        ...q,
+        {
+          type: "success",
+          msg,
+        },
+      ]);
     },
   };
 
-  return <GlobalContext.Provider value={store}>{children}</GlobalContext.Provider>;
+  return (
+    <GlobalContext.Provider value={store}>{children}</GlobalContext.Provider>
+  );
 };
 
 GlobalProvider.propTypes = {
