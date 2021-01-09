@@ -1,11 +1,7 @@
 import React from "react";
-import styled from "styled-components";
 import clsx from "clsx";
 
 import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 
 import { DivFlexCenterInside } from "./styled/Divs";
@@ -26,6 +22,12 @@ const useStyles = makeStyles((theme) => ({
     // border: "1px solid #2f3241",
     backgroundColor: "#ffffff",
     borderRadius: "2px",
+    "&:hover, &:focus": {
+      backgroundColor: "#f0f0f0",
+    },
+    "&:active": {
+      backgroundColor: "#eaeaea",
+    },
   },
   tileInactive: {
     // border: "1px solid #ffffff",
@@ -36,26 +38,51 @@ const useStyles = makeStyles((theme) => ({
     // border: "1px solid #ff4500",
     boxShadow: "0px 0px 0px 2px #ff4500 inset",
   },
+  unselectable: {
+    "-webkit-touch-callout": "none",
+    "-webkit-user-select": "none",
+    "-khtml-user-select": "none",
+    "-moz-user-select": "none",
+    "-ms-user-select": "none",
+    "user-select": "none",
+  },
 }));
 
-const MonthlyCalenderTile = ({ number, highlight = false, events = [] }) => {
+const MonthlyCalenderTile = ({
+  day,
+  month,
+  year,
+  highlight = false,
+  events = [],
+  onClick = (e) => {},
+}) => {
   const classes = useStyles();
+
+  const handleClick = (e) => {
+    if (day < 0) return;
+    onClick(e);
+  };
 
   return (
     <div
       className={clsx(
         classes.tile,
-        number > 0 ? classes.tileActive : classes.tileInactive,
+        day > 0 ? classes.tileActive : classes.tileInactive,
         highlight ? classes.tileHighlight : ""
       )}
+      role="button"
+      onClick={handleClick}
     >
-      {number > 0 && (
+      {day > 0 && (
         <>
-          <Typography variant="h5">{number}</Typography>
+          <Typography variant="h5" className={classes.unselectable}>
+            {day}
+          </Typography>
           <DivFlexCenterInside>
-            {events.map((e, i) => {
-              return <Dot key={i} />;
-            })}
+            {events &&
+              events.map((e, i) => {
+                return <Dot key={i} />;
+              })}
           </DivFlexCenterInside>
         </>
       )}

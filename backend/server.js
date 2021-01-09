@@ -54,20 +54,40 @@ app.get(
 
 // Get all calender data
 app.get(
-  "/api/calenderAll/",
+  "/api/calender/all",
   catchErrors(async (req, res) => {
-    const ret = await cs.getAll();
-    res.json({ ret });
+    const result = await cs.getAll();
+    res.json({ result });
+  })
+);
+
+// Get yearly calender data
+app.get(
+  "/api/calender/year",
+  catchErrors(async (req, res) => {
+    const { y } = req.query;
+    const result = await cs.getYear(y);
+    res.json({ query: { y }, result });
   })
 );
 
 // Get monthly calender data
 app.get(
-  "/api/calender/",
+  "/api/calender/month",
   catchErrors(async (req, res) => {
-    const { month, year } = req.query;
-    const ret = await cs.getMonth(month, year);
-    res.json({ ret });
+    const { m, y } = req.query;
+    const result = await cs.getMonth(m, y);
+    res.json({ query: { m, y }, result });
+  })
+);
+
+// Get daily calender data
+app.get(
+  "/api/calender/day",
+  catchErrors(async (req, res) => {
+    const { d, m, y } = req.query;
+    const result = await cs.getDay(d, m, y);
+    res.json({ query: { d, m, y }, result });
   })
 );
 
@@ -77,7 +97,7 @@ app.post(
   catchErrors(
     authed(async (req, res) => {
       const { day, month, year, title, description, priority } = req.body;
-      const ret = await cs.addEvent(
+      const result = await cs.addEvent(
         day,
         month,
         year,
@@ -85,7 +105,7 @@ app.post(
         description,
         priority
       );
-      res.json({ ret });
+      res.json({ result });
     })
   )
 );
@@ -96,7 +116,7 @@ app.put(
   catchErrors(
     authed(async (req, res) => {
       const { id, day, month, year, title, description, priority } = req.body;
-      const ret = await cs.editEvent(
+      const result = await cs.editEvent(
         id,
         day,
         month,
@@ -105,7 +125,7 @@ app.put(
         description,
         priority
       );
-      res.json({ ret });
+      res.json({ result });
     })
   )
 );
@@ -116,8 +136,8 @@ app.delete(
   catchErrors(
     authed(async (req, res) => {
       const { id } = req.body;
-      const ret = await cs.removeEvent(id);
-      res.json({ ret });
+      const result = await cs.removeEvent(id);
+      res.json({ result });
     })
   )
 );

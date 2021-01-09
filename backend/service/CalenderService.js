@@ -58,23 +58,29 @@ export default class CalenderService {
             ORDER BY
                 year DESC,
                 month DESC,
-                day DESC;`,
+                day DESC,
+                id DESC;`,
             [],
             (res) => {
                 return res.rows;
             }
         );
-        // return this.pool.connect().then((client) => {
-        //     return client
-        //         .query(
+    }
 
-        //         )
-        //         .then()
-        //         .catch((err) => {
-        //             console.log(err.stack);
-        //         })
-        //         .finally(() => client.release());
-        // });
+    getYear(year) {
+        return this.query(
+            `SELECT *
+            FROM calender 
+            WHERE year = $1
+            ORDER BY
+                month DESC,
+                day DESC,
+                id DESC;`,
+            [year],
+            (res) => {
+                return res.rows;
+            }
+        );
     }
 
     getMonth(month, year) {
@@ -83,34 +89,27 @@ export default class CalenderService {
             FROM calender 
             WHERE month = $1 AND year = $2
             ORDER BY
-                year DESC,
-                month DESC,
-                day DESC;`,
+                day DESC,
+                id DESC;`,
             [month, year],
             (res) => {
                 return res.rows;
             }
         );
-        // return this.pool.connect().then((client) => {
-        //     return client
-        //         .query(
-        //             `SELECT *
-        //                 FROM calender
-        //                 WHERE month=$1 AND year=$2
-        //                 ORDER BY
-        //                     year DESC,
-        //                     month DESC,
-        //                     day DESC;`,
-        //             [month, year]
-        //         )
-        //         .then((res) => {
-        //             return res.rows;
-        //         })
-        //         .catch((err) => {
-        //             console.log(err.stack);
-        //         })
-        //         .finally(() => client.release());
-        // });
+    }
+
+    getDay(day, month, year) {
+        return this.query(
+            `SELECT *
+            FROM calender 
+            WHERE day = $1 AND month = $2 AND year = $3
+            ORDER BY
+                id DESC;`,
+            [day, month, year],
+            (res) => {
+                return res.rows;
+            }
+        );
     }
 
     addEvent(day, month, year, title, description, priority) {
@@ -124,23 +123,6 @@ export default class CalenderService {
                 return res;
             }
         );
-        // return this.pool.connect().then((client) => {
-        //     return client
-        //         .query(
-        //             `INSERT INTO
-        //                 calender(date_created, date_edited, day, month, year, title, description, priority)
-        //             VALUES
-        //                 (NOW(), NOW(), $1, $2, $3, $4, $5, $6);`,
-        //             [day, month, year, title, description, priority]
-        //         )
-        //         .then((res) => {
-        //             return res;
-        //         })
-        //         .catch((err) => {
-        //             console.log(err.stack);
-        //         })
-        //         .finally(() => client.release());
-        // });
     }
 
     // Applies changes to all the inputs, even if null/undefined
@@ -160,28 +142,6 @@ export default class CalenderService {
                 return res;
             }
         );
-        // return this.pool.connect().then((client) => {
-        //     return client
-        //         .query(
-        //             `UPDATE calender
-        //             SET date_edited = NOW(),
-        //                 day = $1,
-        //                 month = $2,
-        //                 year = $3,
-        //                 title = $4,
-        //                 description = $5,
-        //                 priority = $6
-        //             WHERE id = $7;`,
-        //             [day, month, year, title, description, priority, id]
-        //         )
-        //         .then((res) => {
-        //             return res;
-        //         })
-        //         .catch((err) => {
-        //             console.log(err.stack);
-        //         })
-        //         .finally(() => client.release());
-        // });
     }
 
     removeEvent(id) {
@@ -193,21 +153,6 @@ export default class CalenderService {
                 return res;
             }
         );
-        // return this.pool.connect().then((client) => {
-        //     return client
-        //         .query(
-        //             `DELETE FROM calender
-        //                 WHERE id = $1;`,
-        //             [id]
-        //         )
-        //         .then((res) => {
-        //             return res;
-        //         })
-        //         .catch((err) => {
-        //             console.log(err.stack);
-        //         })
-        //         .finally(() => client.release());
-        // });
     }
 }
 

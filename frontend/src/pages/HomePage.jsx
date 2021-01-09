@@ -1,13 +1,14 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { GlobalContext } from "../GlobalContext";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
+import { GlobalContext } from "../GlobalContext";
 import { DivFlexCenterHInside } from "../components/styled/Divs";
+import Api from "../util/Api";
 
 const useStyles = makeStyles((theme) => ({
   button: {},
@@ -33,73 +34,25 @@ const HomePage = () => {
   const [description, setDescription] = React.useState("");
   const [priority, setPriority] = React.useState("");
 
-  const api = (url, options) =>
-    fetch(url, options)
-      .then((res) => res.json().then((json) => ({ status: res.status, json })))
-      .then((res) => {
-        if (res.status !== 200) {
-          throw Error(res.json.error);
-        }
-        return res.json;
-      });
-
   const prevDef = (e, fn) => {
     e.preventDefault();
     fn();
   };
 
   const add = () => {
-    api("/api/calender", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `${token}`,
-      },
-      body: JSON.stringify({
-        day,
-        month,
-        year,
-        title,
-        description,
-        priority,
-      }),
-    })
+    Api.addEvent(token, day, month, year, title, description, priority)
       .then(() => showSuccess("Added"))
       .catch((err) => showError(err.message));
   };
 
   const edit = () => {
-    api("/api/calender", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `${token}`,
-      },
-      body: JSON.stringify({
-        id,
-        day,
-        month,
-        year,
-        title,
-        description,
-        priority,
-      }),
-    })
+    Api.editEvent(token, id, day, month, year, title, description, priority)
       .then(() => showSuccess("Edited"))
       .catch((err) => showError(err.message));
   };
 
   const remove = () => {
-    api("/api/calender", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `${token}`,
-      },
-      body: JSON.stringify({
-        id,
-      }),
-    })
+    Api.removeEvent(token, id)
       .then(() => showSuccess("Removed"))
       .catch((err) => showError(err.message));
   };
