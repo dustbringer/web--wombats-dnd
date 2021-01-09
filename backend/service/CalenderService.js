@@ -1,5 +1,6 @@
 import { Pool } from "pg";
-import moment from "moment";
+
+// import { InputError, AccessError } from "../error";
 
 export default class CalenderService {
     constructor() {
@@ -32,92 +33,181 @@ export default class CalenderService {
                     );`
                 )
                 .catch((err) => {
-                    client.release();
                     console.log(err.stack);
                 })
                 .finally(() => client.release());
         });
     }
 
-    getMonth(month) {
+    query(text, values, then) {
         return this.pool.connect().then((client) => {
             return client
-                .query("SELECT * FROM calender WHERE month = $1", [month])
-                .then((res) => {
-                    client.release();
-                    console.log("Month get'ed. ", res);
-                })
+                .query(text, values)
+                .then(then)
                 .catch((err) => {
-                    client.release();
                     console.log(err.stack);
-                });
+                })
+                .finally(() => client.release());
         });
     }
 
+    getAll() {
+        return this.query(
+            `SELECT *
+            FROM calender
+            ORDER BY
+                year DESC,
+                month DESC,
+                day DESC;`,
+            [],
+            (res) => {
+                return res.rows;
+            }
+        );
+        // return this.pool.connect().then((client) => {
+        //     return client
+        //         .query(
+
+        //         )
+        //         .then()
+        //         .catch((err) => {
+        //             console.log(err.stack);
+        //         })
+        //         .finally(() => client.release());
+        // });
+    }
+
+    getMonth(month, year) {
+        return this.query(
+            `SELECT *
+            FROM calender 
+            WHERE month = $1 AND year = $2
+            ORDER BY
+                year DESC,
+                month DESC,
+                day DESC;`,
+            [month, year],
+            (res) => {
+                return res.rows;
+            }
+        );
+        // return this.pool.connect().then((client) => {
+        //     return client
+        //         .query(
+        //             `SELECT *
+        //                 FROM calender
+        //                 WHERE month=$1 AND year=$2
+        //                 ORDER BY
+        //                     year DESC,
+        //                     month DESC,
+        //                     day DESC;`,
+        //             [month, year]
+        //         )
+        //         .then((res) => {
+        //             return res.rows;
+        //         })
+        //         .catch((err) => {
+        //             console.log(err.stack);
+        //         })
+        //         .finally(() => client.release());
+        // });
+    }
+
     addEvent(day, month, year, title, description, priority) {
-        return this.pool.connect().then((client) => {
-            const now = moment().format("D-MMM-YY hh.mm.ss.SSSSSS A Z");
-            return client
-                .query(
-                    `INSERT INTO
-                        calender(date_created, date_edited, day, month, year, title, description, priority)
-                    VALUES
-                        (${now}, ${now}, $1, $2, $3, $4, $5, $6);`,
-                    [day, month, year, title, description, priority]
-                )
-                .then((res) => {
-                    client.release();
-                    console.log("Event added. ", res);
-                })
-                .catch((err) => {
-                    client.release();
-                    console.log(err.stack);
-                });
-        });
+        return this.query(
+            `INSERT INTO
+                calender(date_created, date_edited, day, month, year, title, description, priority)
+            VALUES
+                (NOW(), NOW(), $1, $2, $3, $4, $5, $6);`,
+            [day, month, year, title, description, priority],
+            (res) => {
+                return res;
+            }
+        );
+        // return this.pool.connect().then((client) => {
+        //     return client
+        //         .query(
+        //             `INSERT INTO
+        //                 calender(date_created, date_edited, day, month, year, title, description, priority)
+        //             VALUES
+        //                 (NOW(), NOW(), $1, $2, $3, $4, $5, $6);`,
+        //             [day, month, year, title, description, priority]
+        //         )
+        //         .then((res) => {
+        //             return res;
+        //         })
+        //         .catch((err) => {
+        //             console.log(err.stack);
+        //         })
+        //         .finally(() => client.release());
+        // });
     }
 
     // Applies changes to all the inputs, even if null/undefined
     editEvent(id, day, month, year, title, description, priority) {
-        return this.pool.connect().then((client) => {
-            return client
-                .query(
-                    `UPDATE calender
-                    SET day = $1,
-                        month = $2,
-                        year = $3,
-                        title = $4,
-                        description = $5,
-                        priority = $6
-                    WHERE id = $7;`,
-                    [day, month, year, title, description, priority, id]
-                )
-                .then((res) => {
-                    client.release();
-                    console.log(`Event ${id} edited. `, res);
-                })
-                .catch((err) => {
-                    client.release();
-                    console.log(err.stack);
-                });
-        });
+        return this.query(
+            `UPDATE calender
+            SET date_edited = NOW(),
+                day = $1,
+                month = $2,
+                year = $3,
+                title = $4,
+                description = $5,
+                priority = $6
+            WHERE id = $7;`,
+            [day, month, year, title, description, priority, id],
+            (res) => {
+                return res;
+            }
+        );
+        // return this.pool.connect().then((client) => {
+        //     return client
+        //         .query(
+        //             `UPDATE calender
+        //             SET date_edited = NOW(),
+        //                 day = $1,
+        //                 month = $2,
+        //                 year = $3,
+        //                 title = $4,
+        //                 description = $5,
+        //                 priority = $6
+        //             WHERE id = $7;`,
+        //             [day, month, year, title, description, priority, id]
+        //         )
+        //         .then((res) => {
+        //             return res;
+        //         })
+        //         .catch((err) => {
+        //             console.log(err.stack);
+        //         })
+        //         .finally(() => client.release());
+        // });
     }
 
     removeEvent(id) {
-        return this.pool.connect().then((client) => {
-            return client
-                .query(
-                    `DELETE FROM calender WHERE id = $1;`,
-                    [id]
-                )
-                .then((res) => {
-                    client.release();
-                    console.log(`Event ${id} removed. `, res);
-                })
-                .catch((err) => {
-                    client.release();
-                    console.log(err.stack);
-                });
-        });
+        return this.query(
+            `DELETE FROM calender
+                WHERE id = $1;`,
+            [id],
+            (res) => {
+                return res;
+            }
+        );
+        // return this.pool.connect().then((client) => {
+        //     return client
+        //         .query(
+        //             `DELETE FROM calender
+        //                 WHERE id = $1;`,
+        //             [id]
+        //         )
+        //         .then((res) => {
+        //             return res;
+        //         })
+        //         .catch((err) => {
+        //             console.log(err.stack);
+        //         })
+        //         .finally(() => client.release());
+        // });
     }
 }
 

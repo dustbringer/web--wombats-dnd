@@ -1,12 +1,8 @@
-// import fs from 'fs';
 import express from "express";
-// import swaggerUi from 'swagger-ui-express';
 import bodyParser from "body-parser";
-// import cors from 'cors';
 import path from "path";
 
 import { InputError, AccessError } from "./error";
-// import swaggerDocument from '../../swagger.json';
 import CalenderService from "./service/CalenderService";
 const cs = new CalenderService();
 
@@ -15,7 +11,6 @@ const app = express();
 // Serve static files from the React frontend app
 app.use(express.static(path.join(__dirname, "../frontend/build")));
 
-// app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -39,7 +34,7 @@ const catchErrors = (fn) => async (req, res) => {
 const authed = (fn) => async (req, res) => {
   const pass = req.header("Authorization");
   if (pass !== process.env.POSTGRES_EDIT_TOKEN) {
-    throw Error("Invalid Token");
+    throw new AccessError("Invalid Token");
   }
   await fn(req, res);
 };
@@ -57,41 +52,75 @@ app.get(
   })
 );
 
-// Calender data
+// Get all calender data
 app.get(
-  "/api/calender/:month",
+  "/api/calenderAll/",
   catchErrors(async (req, res) => {
-    const { month } = req.params;
-    const ret = cs.getMonth(month);
-    console.log(ret)
+    const ret = await cs.getAll();
     res.json({ ret });
   })
 );
 
-// app.post('/admin/quiz/new', catchErrors(authed(async (req, res, email) => {
-//   return res.json({ quizId: await addQuiz(req.body.name, email), });
-// })));
+// Get monthly calender data
+app.get(
+  "/api/calender/",
+  catchErrors(async (req, res) => {
+    const { month, year } = req.query;
+    const ret = await cs.getMonth(month, year);
+    res.json({ ret });
+  })
+);
 
-// app.get('/admin/quiz/:quizid', catchErrors(authed(async (req, res, email) => {
-//   const { quizid, } = req.params;
-//   await assertOwnsQuiz(email, quizid);
-//   return res.json(await getQuiz(quizid));
-// })));
+// Add event calender
+app.post(
+  "/api/calender/",
+  catchErrors(
+    authed(async (req, res) => {
+      const { day, month, year, title, description, priority } = req.body;
+      const ret = await cs.addEvent(
+        day,
+        month,
+        year,
+        title,
+        description,
+        priority
+      );
+      res.json({ ret });
+    })
+  )
+);
 
-// app.put('/admin/quiz/:quizid', catchErrors(authed(async (req, res, email) => {
-//   const { quizid, } = req.params;
-//   const { questions, name, thumbnail, } = req.body;
-//   await assertOwnsQuiz(email, quizid);
-//   await updateQuiz(quizid, questions, name, thumbnail);
-//   return res.status(200).send({});
-// })));
+// Edit event calender
+app.put(
+  "/api/calender/",
+  catchErrors(
+    authed(async (req, res) => {
+      const { id, day, month, year, title, description, priority } = req.body;
+      const ret = await cs.editEvent(
+        id,
+        day,
+        month,
+        year,
+        title,
+        description,
+        priority
+      );
+      res.json({ ret });
+    })
+  )
+);
 
-// app.delete('/admin/quiz/:quizid', catchErrors(authed(async (req, res, email) => {
-//   const { quizid, } = req.params;
-//   await assertOwnsQuiz(email, quizid);
-//   await removeQuiz(quizid);
-//   return res.status(200).send({});
-// })));
+// Remove event calender
+app.delete(
+  "/api/calender/",
+  catchErrors(
+    authed(async (req, res) => {
+      const { id } = req.body;
+      const ret = await cs.removeEvent(id);
+      res.json({ ret });
+    })
+  )
+);
 
 /********************** Running the server ************************/
 
