@@ -76,6 +76,32 @@ export default class CalenderService {
         });
     }
 
+    // Applies changes to all the inputs, even if null/undefined
+    editEvent(id, day, month, year, title, description, priority) {
+        return this.pool.connect().then((client) => {
+            return client
+                .query(
+                    `UPDATE calender
+                    SET day = $1,
+                        month = $2,
+                        year = $3,
+                        title = $4,
+                        description = $5,
+                        priority = $6
+                    WHERE id = $7;`,
+                    [day, month, year, title, description, priority, id]
+                )
+                .then((res) => {
+                    client.release();
+                    console.log(`Event ${id} edited. `, res);
+                })
+                .catch((err) => {
+                    client.release();
+                    console.log(err.stack);
+                });
+        });
+    }
+
     removeEvent(id) {
         return this.pool.connect().then((client) => {
             return client

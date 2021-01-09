@@ -1,6 +1,5 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { GlobalContext } from "../GlobalContext";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -21,8 +20,6 @@ const useStyles = makeStyles((theme) => ({
 const HomePage = () => {
   const classes = useStyles();
   const history = useHistory();
-  const context = React.useContext(GlobalContext);
-  const { showError, showSuccess } = context;
 
   return (
     <>
@@ -30,24 +27,6 @@ const HomePage = () => {
         <Typography variant="h4" className={classes.title}>
           Home!!!
         </Typography>
-        <DivFlexCenterHInside>
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={() => showError("bruh")}
-          >
-            Alert Error
-          </Button>
-        </DivFlexCenterHInside>
-        <DivFlexCenterHInside>
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={() => showSuccess("mor ebruh")}
-          >
-            Alert Success
-          </Button>
-        </DivFlexCenterHInside>
         <DivFlexCenterHInside>
           <Button
             variant="outlined"

@@ -7,31 +7,8 @@ import path from "path";
 
 import { InputError, AccessError } from "./error";
 // import swaggerDocument from '../../swagger.json';
-// import {
-//   getEmailFromAuthorization,
-//   login,
-//   logout,
-//   register,
-//   save,
-//   getQuizzesFromAdmin,
-//   addQuiz,
-//   startQuiz,
-//   endQuiz,
-//   submitAnswers,
-//   getResults,
-//   assertOwnsQuiz,
-//   getQuiz,
-//   playerJoin,
-//   updateQuiz,
-//   sessionStatus,
-//   assertOwnsSession,
-//   removeQuiz,
-//   sessionResults,
-//   advanceQuiz,
-//   getQuestion,
-//   getAnswers,
-//   hasStarted,
-// } from './service';
+import CalenderService from "./service/CalenderService";
+const cs = new CalenderService();
 
 const app = express();
 
@@ -59,6 +36,18 @@ const catchErrors = (fn) => async (req, res) => {
   }
 };
 
+const authed = (fn) => async (req, res) => {
+  const pass = req.header("Authorization");
+  if (pass !== process.env.POSTGRES_EDIT_TOKEN) {
+    throw Error("Invalid Token");
+  }
+  await fn(req, res);
+};
+
+// /****************************************************************
+//                        Calender Functions
+// ****************************************************************/
+
 // Serve our base route that returns a Hello World cow
 app.get(
   "/api/test/",
@@ -68,7 +57,43 @@ app.get(
   })
 );
 
-/**************** Running the server ******************/
+// Calender data
+app.get(
+  "/api/calender/:month",
+  catchErrors(async (req, res) => {
+    const { month } = req.params;
+    const ret = cs.getMonth(month);
+    console.log(ret)
+    res.json({ ret });
+  })
+);
+
+// app.post('/admin/quiz/new', catchErrors(authed(async (req, res, email) => {
+//   return res.json({ quizId: await addQuiz(req.body.name, email), });
+// })));
+
+// app.get('/admin/quiz/:quizid', catchErrors(authed(async (req, res, email) => {
+//   const { quizid, } = req.params;
+//   await assertOwnsQuiz(email, quizid);
+//   return res.json(await getQuiz(quizid));
+// })));
+
+// app.put('/admin/quiz/:quizid', catchErrors(authed(async (req, res, email) => {
+//   const { quizid, } = req.params;
+//   const { questions, name, thumbnail, } = req.body;
+//   await assertOwnsQuiz(email, quizid);
+//   await updateQuiz(quizid, questions, name, thumbnail);
+//   return res.status(200).send({});
+// })));
+
+// app.delete('/admin/quiz/:quizid', catchErrors(authed(async (req, res, email) => {
+//   const { quizid, } = req.params;
+//   await assertOwnsQuiz(email, quizid);
+//   await removeQuiz(quizid);
+//   return res.status(200).send({});
+// })));
+
+/********************** Running the server ************************/
 
 // Anything that doesn't match the above, send back index.html
 app.get("*", (req, res) => {
@@ -78,7 +103,7 @@ app.get("*", (req, res) => {
 // Choose the port and start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Mixing it up on port ${PORT}`);
+  console.log(`Starting server on port ${PORT}`);
 });
 
 // /***************************************************************
