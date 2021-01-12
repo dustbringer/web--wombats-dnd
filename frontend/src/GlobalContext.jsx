@@ -7,8 +7,10 @@ export const GlobalContext = React.createContext(null);
 // seperate the contexts!
 const GlobalProvider = ({ children }) => {
   const [alertQueue, setAlertQueue] = React.useState([]);
+  const [calenderToken, setCalenderToken] = React.useState("");
 
   const store = {
+    CalenderToken: [calenderToken, setCalenderToken],
     AlertQueue: [alertQueue, setAlertQueue],
     showError: (msg) => {
       setAlertQueue((q) => [

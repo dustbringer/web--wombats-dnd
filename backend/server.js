@@ -19,7 +19,7 @@ const catchErrors = (fn) => async (req, res) => {
     await fn(req, res);
     // save();
   } catch (err) {
-    console.log("CATCHED ERROR", err);
+    console.log("CAUGHT ERROR", err);
     if (err instanceof InputError) {
       res.status(400).send({ error: err.message });
     } else if (err instanceof AccessError) {

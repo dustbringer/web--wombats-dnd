@@ -6,7 +6,8 @@ import Typography from "@material-ui/core/Typography";
 
 import { GlobalContext } from "../GlobalContext";
 import MonthlyCalenderTile from "./MonthlyCalenderTile";
-import MonthlyCalenderDayDialog from "./MonthlyCalenderDayDialog";
+import DayDialog from "./DayDialog";
+import TokenDialog from "./TokenDialog";
 import {
   DivRowSpaceBetween,
   DivFlexCenterHInside,
@@ -40,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
     margin: "0 1px 5px",
     borderRadius: "2px",
   },
+  setTokenButton: {
+    margin: "0 10px",
+  },
 }));
 
 const MonthlyCalender = () => {
@@ -50,8 +54,9 @@ const MonthlyCalender = () => {
   const [currYear, setCurrYear] = React.useState(cal.currDate.year);
   const [days, setDays] = React.useState([]);
   const [events, setEvents] = React.useState([]);
-  const [dialogDay, setDialogDay] = React.useState(1);
-  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [dayDialogDay, setDayDialogDay] = React.useState(1);
+  const [dayDialogOpen, setDayDialogOpen] = React.useState(false);
+  const [tokenDialogOpen, setTokenDialogOpen] = React.useState(false);
 
   React.useEffect(() => {
     const firstDay = Dates.dayOfWeek(1, currMonth, currYear);
@@ -75,8 +80,8 @@ const MonthlyCalender = () => {
           setEvents(res.result);
       })
       .catch((err) => showError(err.message));
-  // TODO fix this infinite loop when `showError` in dependencies
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // TODO fix this infinite loop when `showError` in dependencies
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currMonth, currYear]);
 
   const prevMonth = () => {
@@ -104,6 +109,14 @@ const MonthlyCalender = () => {
           {`${currMonth}. ${cal.months[currMonth - 1].name} ${currYear} P.D.`}
         </Typography>
         <div>
+          <Button
+            size="small"
+            variant="outlined"
+            onClick={() => setTokenDialogOpen(true)}
+            className={classes.setTokenButton}
+          >
+            Set Token
+          </Button>
           <Button variant="outlined" onClick={prevMonth}>
             Prev
           </Button>
@@ -153,8 +166,8 @@ const MonthlyCalender = () => {
                     }
                     events={events.filter((e) => e.day === day)}
                     onClick={(e) => {
-                      setDialogDay(day);
-                      setDialogOpen(true);
+                      setDayDialogDay(day);
+                      setDayDialogOpen(true);
                     }}
                   />
                 );
@@ -163,12 +176,16 @@ const MonthlyCalender = () => {
           ))}
         </div>
       </DivFlexCenterHInside>
-      <MonthlyCalenderDayDialog
-        day={dialogDay}
+      <DayDialog
+        day={dayDialogDay}
         month={currMonth}
         year={currYear}
-        open={dialogOpen}
-        handleClose={() => setDialogOpen(false)}
+        open={dayDialogOpen}
+        handleClose={() => setDayDialogOpen(false)}
+      />
+      <TokenDialog
+        open={tokenDialogOpen}
+        handleClose={() => setTokenDialogOpen(false)}
       />
     </div>
   );

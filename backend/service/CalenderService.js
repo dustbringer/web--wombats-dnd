@@ -1,6 +1,20 @@
 import { Pool } from "pg";
+import { InputError } from "../error";
 
-// import { InputError, AccessError } from "../error";
+const pgsqlErrorTranslate = (err) => {
+    // If it is a check_violation
+    if (err.code === "23514") {
+        switch (err.constraint) {
+            case "calender_title_check":
+                return "Title cannot be empty.";
+            case "calender_description_check":
+                return "Description cannot be empty.";
+            case "calender_priority_check":
+                return "Priority must be between 1 and 5 inclusive.";
+        }
+    }
+    return err.message;
+};
 
 export default class CalenderService {
     constructor() {
@@ -34,6 +48,7 @@ export default class CalenderService {
                 )
                 .catch((err) => {
                     console.log(err.stack);
+                    throw new Error("Table creation failed");
                 })
                 .finally(() => client.release());
         });
@@ -45,7 +60,8 @@ export default class CalenderService {
                 .query(text, values)
                 .then(then)
                 .catch((err) => {
-                    console.log(err.stack);
+                    console.log(err);
+                    throw new InputError(pgsqlErrorTranslate(err));
                 })
                 .finally(() => client.release());
         });
