@@ -50,7 +50,7 @@ const DayDialog = ({
     setEvents([]);
     Api.getDay(day, month, year)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setEvents(res.result);
       })
       .catch((err) => showError(err.message));

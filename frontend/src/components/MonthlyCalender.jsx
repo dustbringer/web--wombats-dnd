@@ -49,7 +49,8 @@ const useStyles = makeStyles((theme) => ({
 const MonthlyCalender = () => {
   const classes = useStyles();
   const context = React.useContext(GlobalContext);
-  const { showError, showSuccess } = context;
+  const { CalenderToken, showError, showSuccess } = context;
+  const [calenderToken] = CalenderToken;
   const [currMonth, setCurrMonth] = React.useState(cal.currDate.month);
   const [currYear, setCurrYear] = React.useState(cal.currDate.year);
   const [days, setDays] = React.useState([]);
@@ -72,7 +73,7 @@ const MonthlyCalender = () => {
     setEvents([]);
     Api.getMonth(currMonth, currYear)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if (
           currMonth === parseInt(res.query.m, 10) &&
           currYear === parseInt(res.query.y, 10)
@@ -109,6 +110,14 @@ const MonthlyCalender = () => {
           {`${currMonth}. ${cal.months[currMonth - 1].name} ${currYear} P.D.`}
         </Typography>
         <div>
+          <Button
+            size="small"
+            variant="outlined"
+            onClick={() => showSuccess(calenderToken)}
+            className={classes.setTokenButton}
+          >
+            Show Token
+          </Button>
           <Button
             size="small"
             variant="outlined"

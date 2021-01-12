@@ -32,22 +32,6 @@ const theme = createMuiTheme({
 });
 
 function App() {
-  // const [moo, setMoo] = React.useState("notmoo'ed yet");
-
-  // React.useEffect(() => {
-  //   fetch(`/api/test`)
-  //     .then((res) => res.json().then((json) => ({ status: res.status, json })))
-  //     .then((res) => {
-  //       console.log(res);
-  //       if (res.status !== 200) {
-  //         throw Error(res.json.error);
-  //       }
-  //       return res.json;
-  //     })
-  //     .then((json) => setMoo(json.moo))
-  //     .catch((err) => console.log("ERRORR", err.message));
-  // }, []);
-
   return (
     <div id="root">
       <GlobalProvider>

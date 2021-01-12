@@ -60,7 +60,7 @@ export default class CalenderService {
                 .query(text, values)
                 .then(then)
                 .catch((err) => {
-                    console.log(err);
+                    console.log(err.stack);
                     throw new InputError(pgsqlErrorTranslate(err));
                 })
                 .finally(() => client.release());
