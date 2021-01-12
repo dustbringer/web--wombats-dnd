@@ -32,6 +32,7 @@ const DayDialog = ({
   year,
   open = false,
   handleClose = () => {},
+  postChange = () => {},
 }) => {
   const context = React.useContext(GlobalContext);
   const { showError, showSuccess } = context;
@@ -39,7 +40,10 @@ const DayDialog = ({
   const [addDialogOpen, setAddDialogOpen] = React.useState(false);
   const [updatedToggle, setUpdatedToggle] = React.useState(false);
 
-  const updateList = () => setUpdatedToggle((b) => !b);
+  const updateList = () => {
+    postChange();
+    setUpdatedToggle((b) => !b);
+  };
 
   const onAdd = () => {
     setAddDialogOpen(true);

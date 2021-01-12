@@ -57,6 +57,11 @@ const MonthlyCalender = () => {
   const [dayDialogDay, setDayDialogDay] = React.useState(1);
   const [dayDialogOpen, setDayDialogOpen] = React.useState(false);
   const [tokenDialogOpen, setTokenDialogOpen] = React.useState(false);
+  const [updatedToggle, setUpdatedToggle] = React.useState(false);
+
+  const updateEvents = () => {
+    setUpdatedToggle((b) => !b);
+  };
 
   React.useEffect(() => {
     const firstDay = Dates.dayOfWeek(1, currMonth, currYear);
@@ -82,7 +87,7 @@ const MonthlyCalender = () => {
       .catch((err) => showError(err.message));
     // TODO fix this infinite loop when `showError` in dependencies
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currMonth, currYear]);
+  }, [updatedToggle, currMonth, currYear]);
 
   const prevMonth = () => {
     if (currMonth === 1) {
@@ -182,6 +187,7 @@ const MonthlyCalender = () => {
         year={currYear}
         open={dayDialogOpen}
         handleClose={() => setDayDialogOpen(false)}
+        postChange = {updateEvents}
       />
       <TokenDialog
         open={tokenDialogOpen}
