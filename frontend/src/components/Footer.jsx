@@ -44,7 +44,7 @@ const Footer = () => {
               >
                 dustbringer
               </Link>
-              , 2020. Powered by{" "}
+              , 2020-2021. Powered by{" "}
               <Link
                 href="https://reactjs.org/"
                 className={classes.link}
