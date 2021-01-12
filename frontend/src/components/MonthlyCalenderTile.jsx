@@ -81,7 +81,7 @@ const MonthlyCalenderTile = ({
           <DivFlexCenterInside>
             {events &&
               [...new Array(Math.min(6, events.length))].map((e, i) => {
-                return <Dot key={i} />;
+                return <Dot key={i} color="#0B1B36" />;
               })}
           </DivFlexCenterInside>
         </>

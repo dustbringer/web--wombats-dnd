@@ -74,7 +74,7 @@ const DayDialog = ({
             </Typography>
           ) : (
             events.map((e, i) => (
-              <EventCard event={e} postChange={updateList} />
+              <EventCard event={e} postChange={updateList} key={e.id} />
             ))
           )}
         </DialogContent>
