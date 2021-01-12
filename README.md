@@ -4,6 +4,7 @@ A website for a private Dungeons and Dragons campaign.
 ## Local Build
 - Run `yarn` in both root and `/frontend` folders to install packages
 - Add required Heroku environment variables into `/.env`
+  - ***DO NOT*** commit `/.env`. Please include it in `.gitignore`
   - For each remote environment variable, run `heroku config:get CONFIG-VAR-NAME -s  >> .env` in root
 - **Backend**: run `heroku local` in root
 - **Frontend**: Run `yarn start` in `/frontend`
