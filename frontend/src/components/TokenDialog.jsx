@@ -13,7 +13,7 @@ import { GlobalContext } from "../GlobalContext";
 const TokenDialog = ({ open = false, handleClose = () => {} }) => {
   const context = React.useContext(GlobalContext);
   const { CalenderToken, showSuccess } = context;
-  const [, setCalenderToken] = CalenderToken;
+  const [calenderToken, setCalenderToken] = CalenderToken;
   const [token, setToken] = React.useState("");
 
   const updateToken = (e) => {
@@ -31,12 +31,16 @@ const TokenDialog = ({ open = false, handleClose = () => {} }) => {
         onClose={handleClose}
         aria-labelledby="set-calender-token-dialog"
       >
-        <DialogTitle>Set Token</DialogTitle>
+        <DialogTitle>
+          Set Token
+          <Typography variant="body2" component="p">
+            Current Token: <code>{calenderToken}</code>
+          </Typography>
+        </DialogTitle>
         <DialogContent>
           <form onSubmit={updateToken}>
             <TextField
               autoFocus
-              margin="dense"
               label="Calender Token"
               type="text"
               value={token}
