@@ -148,8 +148,6 @@ app.delete(
 // Anything that doesn't match the above, send back index.html
 app.get("/*", (req, res) => {
   let url = path.join(__dirname + "../frontend/build", "index.html");
-  if (!url.startsWith('/app/')) // we're on local windows
-    url = url.substring(1);
   res.sendFile(url);
 });
 
