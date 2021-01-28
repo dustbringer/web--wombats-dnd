@@ -1,5 +1,5 @@
 import React from "react";
-import { HashRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import GlobalProvider from "./GlobalContext";
 import Alerts from './components/Alerts';
 import "./App.css";
