@@ -2,7 +2,7 @@
   "name": "wombat-wildemount-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "backend/server.js",
   "author": "",
   "license": "ISC",
   "dependencies": {
